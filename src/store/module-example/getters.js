@@ -1,2 +1,3 @@
-export function someGetter (/* state */) {
+export function getAuthUser (state) {
+    return state.user;
 }

@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="text-center">
-    <h1>Login</h1>
+    <h1 class="text-weight-bold text-h2">Welcome to Bolg</h1>
     <q-btn color="primary" icon="fab fa-google" label="Sign in with Google" @click="signInWithGoogle"/>
   </q-page>
 </template>
@@ -15,8 +15,9 @@ export default {
       user: []
     }    
   },
-  mounted() {
-    if( firebase.auth().currentUser ) {
+  async mounted() {
+    //if user auth
+    if( await firebase.auth().currentUser ) {
       this.$router.push({ name: 'Home' });     
     }
   },
@@ -25,18 +26,20 @@ export default {
       let db = firebase.firestore();
       let result = await firebase.auth().signInWithPopup(googleProvider);
       
-      this.user = await result.user;
+      let { uid, displayName, email, photoURL } = await result.user;
 
-      this.$store.commit('example/storeUser', {
-        uid: this.user.uid,
-        displayName: this.user.displayName,
-        email: this.user.email,
-        photoURL: this.user.photoURL,
-      });
-
+      this.user = {
+        uid: uid,
+        displayName: displayName,
+        email: email,
+        photoURL: photoURL,
+      };
+      //save userinfo to store
+      this.$store.commit('example/storeUser', this.user);
+      //save to userinfo to db
       let user = await db.collection('users').doc(this.user.uid).get();
       if( !user.exists ) {
-        db.collection('users').doc(this.user.uid).set({...this.user});
+        db.collection('users').doc(this.user.uid).set(this.user);
       }
       this.$router.push({ name: 'Home' });     
     }

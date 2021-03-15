@@ -12,8 +12,17 @@
       </q-toolbar>
 
       <q-tabs v-model="tab">
-        <q-tab name="blogs" label="Blogs" />
-        <q-tab name="newpost" label="New Post" />
+        <q-route-tab 
+          name="blogs"
+          label="Blogs"
+          :to="{ name: 'Home' }" 
+        />
+
+        <q-route-tab
+          name="newpost"
+          label="New Post"
+          :to="{ name: 'New Post' }" 
+        />
       </q-tabs>
     </q-header>
 
