@@ -9,11 +9,11 @@
     <div class="row justify-center">
       <div class="col-5">
         <q-form
-          @submit="onSubmit"
+          @submit.prevent="onSubmit"
           class="q-gutter-md"
         >
           <q-input
-            filled
+            outlined
             v-model="title"
             label="Title"
             lazy-rules
@@ -111,13 +111,25 @@
           />
 
           <q-input
-            filled
+            outlined
             v-model="excerpt"
             label="Excerpt"
             lazy-rules
             autogrow
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
+
+          <q-input
+            outlined
+            @keydown.tab="addTags"
+            label="Tags"
+            hint="Press tab to add tag"
+          />
+
+          <q-chip v-for="tag in tags" :key="tag">
+            {{ tag }}
+          </q-chip>
+
 
           <q-uploader
             style="max-width: 100%"
@@ -147,6 +159,7 @@
 
 <script>
 import { firebase, timestamp } from './../firebase/config.js';
+import { compress } from 'image-conversion';
 
 export default {
   name: 'NewPost',
@@ -157,6 +170,7 @@ export default {
       picture: '',
       excerpt: '',
       disableButton: false,
+      tags: [],
     }
   },
   async mounted() {
@@ -184,7 +198,8 @@ export default {
         userName: userInfo.displayName,
         userPicture: userInfo.photoURL,
         excerpt: this.excerpt,
-        slug: this.title.replaceAll(" ", "-")
+        slug: this.title.replaceAll(" ", "-"),
+        tags: this.tags,
       });
       // after save
       this.$q.loading.hide();
@@ -196,8 +211,14 @@ export default {
       let storageRef = firebase.storage().ref(`photos/${imageId}.jpg`);
       //added photo
       this.disableButton = true;
+      //compress photo
+      let compressedPhoto = await compress(imageFile[0], {
+        quality: 0.8,
+        type: "image/jpeg",
+        scale: 0.5,
+      });
       //upload photo
-      let imageSnap = await storageRef.put(imageFile[0], { contentType: 'image/jpeg' });
+      let imageSnap = await storageRef.put(compressedPhoto, { contentType: 'image/jpeg' });
       //get photo download URL
       this.picture = await imageSnap.ref.getDownloadURL();
       this.disableButton = false;
@@ -207,6 +228,9 @@ export default {
         type: 'negative',
         message: 'Only images are allowed'
       }) 
+    },
+    addTags(e) {
+      this.tags.push(e.target.value);
     }
   }
 }

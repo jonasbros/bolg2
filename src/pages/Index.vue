@@ -8,7 +8,7 @@
     
     <div class="row justify-center text-center" v-for="(blog, index) in blogs" :key="index">
       <div class="col-7">
-        <blogs :blog="blog"/>
+        <Blogs :blog="blog"/>
         <hr>
       </div>
     </div>
@@ -18,12 +18,12 @@
 <script>
 import { firebase } from './../firebase/config.js';
 
-import blogs from './../components/Blogs.vue';
+import Blogs from './../components/Blogs.vue';
 
 export default {
   name: 'PageIndex',
   components: {
-    blogs,
+    Blogs,
   },
   data() {
     return {
