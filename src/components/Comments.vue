@@ -27,11 +27,25 @@
       <div class="col-7">
         <div class="row" v-for="(comment, index) in comments" :key="index">
           <div class="col-12">
-            <p>{{ comments.userName }} at {{ formattedCommentDate(comments.createdAt) }}</p>
+            <p>{{ comment.userName }} at {{ comment.createdAt }}</p>
           </div>
         </div>
       </div>
     </div>
+
+    <div class="row q-mt-md justify-center">
+      <div class="col-7">
+        <q-btn 
+          color="primary"
+          class="full-width"
+          label="Load comments"
+          @click="loadComments"
+          :loading="commentsLoading"
+        />       
+      </div>
+    </div>
+
+
     
   </div>
 </template>
@@ -47,18 +61,13 @@ export default {
     return {
       comment: '',
       commentsLoading: false,
-      commentsPer: 8,
+      commentsPer: 1,
       commentsLastVisible: null,
       comments: [],
     }
   },
   mounted() {
-    window.onscroll = (ev) => {
-        if ( !this.commentsLoading && (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight - 5) {
-          this.commentsLoading = true;
-          this.loadComments();
-        }
-    };
+
   },
   methods: {
     onSubmit() {
@@ -66,6 +75,7 @@ export default {
     },
     async loadComments() {
       let db = firebase.firestore();
+      this.commentsLoading = true;
       //first set of comments
       let comments = [];
       if( !this.comments.length ) {
@@ -83,17 +93,22 @@ export default {
           .limit(this.commentsPer)
           .get();
       }
-      //
-      this.comments = comments.docs.map((doc) => {
-        return {...doc.data()}
-      });
-      //last comment for pagination
-      this.commentsLastVisible = comments.docs[comments.docs.length-1];
+      //if there's still comments returned
+      if( !comments.empty ) {
+        //last comment for pagination
+        this.commentsLastVisible = comments.docs[comments.docs.length-1];
+        //
+        comments = await comments.docs.map((doc, i, arr) => {
+          let newDoc = doc.data();
+          newDoc.createdAt = this.formattedCommentDate(newDoc.createdAt.toDate());
+          return { ...newDoc }
+        });
+        this.comments.push(...comments);
+      }
       this.commentsLoading = false;
-      console.log(this.comments);
     },  // loadComments()
     formattedCommentDate(date) {
-      return moment(date.toDate()).format('MMM DD, YYYY');
+      return moment(date).format('MMM DD, YYYY');
     }
   }
 }
