@@ -11,7 +11,7 @@
         </q-toolbar>
 
       <q-tabs v-model="tab">
-        <q-tab name="blogs" label="Blogs" />
+        <q-tab name="blogs" label="Posts" />
         <q-tab name="login" label="Login" />
       </q-tabs>
     </q-header>
