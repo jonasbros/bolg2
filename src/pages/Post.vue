@@ -19,7 +19,7 @@
     <div class="row justify-center items-start post__row">
       <div class="col-7">
         <q-chip v-for="(tag, index) in post.tags" :key="index">
-          {{tag}}
+          #{{tag}}
         </q-chip>
       </div>
     </div>

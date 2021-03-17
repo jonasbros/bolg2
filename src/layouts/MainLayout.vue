@@ -14,7 +14,7 @@
       <q-tabs v-model="tab">
         <q-route-tab 
           name="blogs"
-          label="Blogs"
+          label="Posts"
           :to="{ name: 'Home' }" 
         />
 

@@ -15,7 +15,7 @@
 
       <p>{{ truncateText(blog.excerpt, truncateExcerptCount) }}</p>
       <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate() }}</p>
-      <q-chip v-for="(tag, index) in blog.tags" :key="index">{{ tag }}</q-chip>
+      <q-chip v-for="(tag, index) in blog.tags" :key="index">#{{ tag }}</q-chip>
     </div>
   </div>
 </template>
