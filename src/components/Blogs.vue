@@ -14,7 +14,7 @@
       </router-link>
 
       <p>{{ truncateText(blog.excerpt, truncateExcerptCount) }}</p>
-      <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate() }}</p>
+      <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate }}</p>
       <q-chip v-for="(tag, index) in blog.tags" :key="index">#{{ tag }}</q-chip>
     </div>
   </div>
@@ -33,10 +33,12 @@ export default {
       truncateExcerptCount: 45,
     }
   },
-  methods: {
+  computed: {
     formattedPostDate() {
-      return moment(this.blog.createdAt.toDate()).format('MMM DD, YYYY');
+      return moment(this.blog.createdAt.toDate()).format('MMM DD, YYYY HH:mm:ss a');
     },
+  },
+  methods: {
     truncateText(text, wordCount) {
       let splitText = text.split(" ");
       let thWord = splitText[wordCount - 1];

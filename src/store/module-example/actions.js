@@ -1,2 +1,3 @@
-export function someAction (/* context */) {
+export function storeUserAction ({ commit }, user) {
+  commit('storeUserMutation', user);
 }

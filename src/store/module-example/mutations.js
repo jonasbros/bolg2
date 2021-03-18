@@ -1,3 +1,3 @@
-export function storeUser (state, userInfo) {
+export function storeUserMutation (state, userInfo) {
     state.user = userInfo;
 }

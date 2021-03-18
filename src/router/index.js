@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-import routes from './routes'
+import routes from './routes';
+import store from './../store';
 
-import { firebase, isAuthUser } from './../firebase/config.js';
+import { firebase } from './../firebase/config.js';
 
 Vue.use(VueRouter)
 
@@ -30,14 +31,29 @@ export default function (/* { store, ssrContext } */) {
 
 
   Router.beforeEach(async (to, from, next) => {
-    let currentUser = isAuthUser;
-    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    let currentUser = null;
 
-    if (requiresAuth && !currentUser){
-      next('Login');
-    }else{
-      next();
-    }
+    firebase.auth().onAuthStateChanged((user) => {
+      let { uid, displayName, email, photoURL } = user;
+      // store.dispatch('example/storeUserAction', {
+      //   uid,
+      //   displayName,
+      //   email,
+      //   photoURL
+      // });
+
+      console.log('main', user);
+
+      currentUser = user;
+      const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+      if (requiresAuth && !currentUser){
+        next('Login');
+      }else{
+        next();
+      }
+    });
+
   });
 
   return Router

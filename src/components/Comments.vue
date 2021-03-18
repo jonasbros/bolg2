@@ -79,14 +79,17 @@ export default {
       submitCommentLoading: false,
     }
   },
-  async mounted() {
-    this.isAuthUser = await isAuthUser();
+  mounted() {
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
     console.log('comments', this.isAuthUser);
     this.postId = this.$route.params.id;
   },
   methods: {
     async onSubmit() {
-      if( !this.isAuthUser ) return;
+      if( !this.isAuthUser ){
+         console.log('No auth!'); 
+         return;
+      }
 
       let db = firebase.firestore();
       this.submitCommentLoading = true;
@@ -114,7 +117,7 @@ export default {
       //
       newComment = newComment.data();
       //format createdAt date
-      newComment.createdAt = moment(newComment.createdAt.toDate()).format('MMM DD, YYYY');
+      newComment.createdAt = moment(newComment.createdAt.toDate()).format('MMM DD, YYYY HH:mm:ss a');
       //add new comment to top of array
       this.comments.unshift({ ...newComment });
     },

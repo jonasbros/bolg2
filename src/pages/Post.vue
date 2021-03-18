@@ -13,7 +13,7 @@
           <img :src="post.userPicture" :alt="post.userName">
           <div>
             <p class="text-weight-bold">{{ post.userName }}</p> 
-            <p class="text-caption">{{ formattedPostDate() }}</p>          
+            <p class="text-caption">{{ formattedPostDate }}</p>          
           </div>
         </div>
       </div>
@@ -56,6 +56,7 @@ export default {
   data() {
     return {
       post: [],
+      formattedPostDate: null,
     }
   },
   async created() {
@@ -66,15 +67,13 @@ export default {
       .doc(postId)
       .get();
     
-    this.post = res.data();
+    this.formattedPostDate = moment(res.data().createdAt.toDate()).format('MMM DD, YYYY YYYY HH:mm:ss a');
+    this.post = await res.data();
   },
   methods: {
     getPost() {
       console.log('peepee');
     },
-    formattedPostDate() {
-      return moment(this.post.createdAt.toDate()).format('MMM DD, YYYY');
-    }
   }
 }
 </script>

@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { firebase, isAuthUser } from './../firebase/config.js';
+import { firebase } from './../firebase/config.js';
 
 export default {
   data() {
@@ -59,9 +59,8 @@ export default {
       isAuthUser: null,
     }
   },
-  async created() {
-    this.isAuthUser = await isAuthUser();
-    console.log(await this.$store.getters['example/getAuthUser']);
+  mounted() {
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
   },
   methods: {
     logout() {
