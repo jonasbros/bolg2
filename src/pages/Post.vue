@@ -11,7 +11,10 @@
         <h1 class="text-weight-bold text-h2">{{ post.title }}</h1>
         <div class="post__user-info" vif="post.length">
           <img :src="post.userPicture" :alt="post.userName">
-          <p>{{ post.userName }} at {{ formattedPostDate() }}</p> 
+          <div>
+            <p class="text-weight-bold">{{ post.userName }}</p> 
+            <p class="text-caption">{{ formattedPostDate() }}</p>          
+          </div>
         </div>
       </div>
     </div>
@@ -41,7 +44,7 @@
 </template>
 
 <script>
-import { firebase } from './../firebase/config.js';
+import { firebase, isAuthUser } from './../firebase/config.js';
 import moment from 'moment';
 import Comments from './../components/Comments.vue';
 
@@ -64,7 +67,6 @@ export default {
       .get();
     
     this.post = res.data();
-    console.log(this.post);
   },
   methods: {
     getPost() {
@@ -97,8 +99,8 @@ export default {
 
     img { 
       border-radius: 69%;
-      height: 50px;
-      width: 50px;
+      height: 42px;
+      width: 42px;
     }
 
     p {

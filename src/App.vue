@@ -4,7 +4,14 @@
   </div>
 </template>
 <script>
+import { firebase, isAuthUser } from './firebase/config.js';
+
 export default {
-  name: 'App'
+  name: 'App',
+  async mounted() {
+    let test = await isAuthUser();
+    console.log(window.localStorage);
+    //await this.$store.commit('example/storeUser', this.user);   
+  }
 }
 </script>

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 import routes from './routes'
 
+import { firebase, isAuthUser } from './../firebase/config.js';
+
 Vue.use(VueRouter)
 
 /*
@@ -24,7 +26,19 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
-  })
+  });
+
+
+  Router.beforeEach(async (to, from, next) => {
+    let currentUser = isAuthUser;
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+    if (requiresAuth && !currentUser){
+      next('Login');
+    }else{
+      next();
+    }
+  });
 
   return Router
 }

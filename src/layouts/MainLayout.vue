@@ -8,7 +8,23 @@
 
         <q-toolbar-title class="text-weight-bold">BOLG</q-toolbar-title>
       
-        <q-btn flat round dense icon="logout" label="Logout" @click="logout"/>
+        <q-btn
+          v-if="isAuthUser"
+          flat 
+          dense 
+          icon="logout" 
+          label="Logout" 
+          @click="logout"
+        />
+
+        <q-btn
+          v-else
+          flat 
+          dense
+          icon="login"
+          label="Login"
+          :to="{ name: 'Login' }" 
+        />
       </q-toolbar>
 
       <q-tabs v-model="tab">
@@ -22,6 +38,7 @@
           name="newpost"
           label="New Post"
           :to="{ name: 'New Post' }" 
+          v-if="isAuthUser"
         />
       </q-tabs>
     </q-header>
@@ -33,13 +50,18 @@
 </template>
 
 <script>
-import { firebase } from './../firebase/config.js';
+import { firebase, isAuthUser } from './../firebase/config.js';
 
 export default {
   data() {
     return {
       tab: 'blogs',
+      isAuthUser: null,
     }
+  },
+  async created() {
+    this.isAuthUser = await isAuthUser();
+    console.log(await this.$store.getters['example/getAuthUser']);
   },
   methods: {
     logout() {

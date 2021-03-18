@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="text-weight-bold q-ma-none q-mb-md">Comments</h4>
-    <div class="row">
+    <div class="row" v-if="isAuthUser">
       <div class="col-12">
         <q-form
           @submit.prevent="onSubmit"
@@ -13,11 +13,18 @@
             label="Add a comment"
             lazy-rules
             autogrow
+            ref="commentInput"
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
 
           <div class="q-mt-xs">
-            <q-btn label="Submit" type="submit" color="primary"/>
+            <q-btn 
+              label="Who asked?"
+              type="submit"
+              color="primary"
+              :loading="submitCommentLoading"
+              :disable="submitCommentLoading"
+            />
           </div>
         </q-form>
       </div>
@@ -26,72 +33,7 @@
     <div class="row comments__container q-mt-lg">
       <div class="col-12">
         <div class="row q-mb-md" v-for="(comment, index) in comments" :key="index">
-          <div class="col-12">
-            <q-card flat bordered class="my-card bg-grey-1">
-              <q-card-section style="padding-bottom: 0;">
-                <div class="row items-center no-wrap">
-                  <div class="col comment__user-info">
-                    <img :src="comment.userPicture" :alt="comment.userName">
-                    <div>
-                      <div class="text-weight-bold">{{ comment.userName }}</div>
-                      <div class="text-caption">{{ comment.createdAt }}</div>
-                    </div>
-                  </div>
-
-                  <div class="col-auto">
-                    <q-btn color="grey-7" round flat icon="more_vert">
-                      <q-menu cover auto-close>
-                        <q-list>
-                          <q-item clickable>
-                            <q-item-section>Delete Comment</q-item-section>
-                          </q-item>
-                          <q-item clickable>
-                            <q-item-section>Report Comment</q-item-section>
-                          </q-item>
-                        </q-list>
-                      </q-menu>
-                    </q-btn>
-                  </div>
-                </div>
-              </q-card-section>
-
-              <q-card-section>
-                {{ comment.body }}
-              </q-card-section>
-
-              <q-card-section 
-                class="text-right text-grey-7"
-                style="padding-top: 0;"
-              >
-                <span class="text-subtitle2 q-mr-sm">{{ comment.likes }} likes</span>
-                <span class="text-subtitle2">{{ comment.replies }} replies</span>
-              </q-card-section>
-
-              <q-separator />
-
-              <q-card-actions class="justify-around">
-                <q-item clickable class="col-4">
-                  <q-item-section avatar>
-                    <q-icon color="primary" name="far fa-thumbs-up" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>Like</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item clickable class="col-4">
-                  <q-item-section avatar>
-                    <q-icon color="primary" name="far fa-comment-alt" />
-                  </q-item-section>
-
-                  <q-item-section>
-                    <q-item-label>Comment</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-card-actions>
-            </q-card>
-          </div>
+          <SingleComment :comment="comment" />
         </div>
       </div>
     </div>
@@ -114,12 +56,17 @@
 </template>
 
 <script>
-import { firebase } from './../firebase/config.js';
+import { firebase, timestamp, isAuthUser } from './../firebase/config.js';
 import moment from 'moment';
+
+import SingleComment from './SingleComment.vue';
 
 export default {
   name: 'Comments',
   props: ['post'],
+  components: {
+    SingleComment,
+  },
   data () {
     return {
       comment: '',
@@ -127,16 +74,49 @@ export default {
       commentsPer: 8,
       commentsLastVisible: null,
       comments: [],
-      currentUser: [],
+      isAuthUser: null,
+      postId: null,
+      submitCommentLoading: false,
     }
   },
-  mounted() {
-
+  async mounted() {
+    this.isAuthUser = await isAuthUser();
+    console.log('comments', this.isAuthUser);
+    this.postId = this.$route.params.id;
   },
   methods: {
-    onSubmit() {
-      console.log(1);
-      
+    async onSubmit() {
+      if( !this.isAuthUser ) return;
+
+      let db = firebase.firestore();
+      this.submitCommentLoading = true;
+      let newCommentRes = await db.collection('comments').add({
+        userId: this.isAuthUser.uid,
+        userName: this.isAuthUser.displayName,
+        userPicture: this.isAuthUser.photoURL,
+        postId: this.postId,
+        body: this.comment,
+        createdAt: timestamp(),
+        replies: 0,
+        likes: 0,
+      });
+
+      this.$refs.commentInput.resetValidation();
+      this.comment = '';
+      this.loadNewComment(newCommentRes.id);
+      this.submitCommentLoading = false;
+    },
+    async loadNewComment(commentId) {
+      let db = firebase.firestore();
+      let newComment = await db.collection('comments').doc(commentId).get();
+      //last item to startAt for pagination
+      this.commentsLastVisible = newComment;
+      //
+      newComment = newComment.data();
+      //format createdAt date
+      newComment.createdAt = moment(newComment.createdAt.toDate()).format('MMM DD, YYYY');
+      //add new comment to top of array
+      this.comments.unshift({ ...newComment });
     },
     async loadComments() {
       let db = firebase.firestore();
@@ -158,18 +138,16 @@ export default {
           .limit(this.commentsPer)
           .get();
       }
-      //push only if not empty
-      if( !comments.empty ) {
-        //last comment for pagination
-        this.commentsLastVisible = comments.docs[comments.docs.length-1];
-        //
-        comments = await comments.docs.map((doc, i, arr) => {
-          let newDoc = doc.data();
-          newDoc.createdAt = this.formattedCommentDate(newDoc.createdAt.toDate());
-          return { ...newDoc }
-        });
-        this.comments.push(...comments);
-      }
+      //last comment for pagination
+      this.commentsLastVisible = comments.docs[comments.docs.length-1];
+      //
+      comments = await comments.docs.map((doc, i, arr) => {
+        let newDoc = doc.data();
+        newDoc.createdAt = this.formattedCommentDate(newDoc.createdAt.toDate());
+        return { ...newDoc }
+      });
+      this.comments.push(...comments);
+    
       this.commentsLoading = false;
     },  // loadComments()
     formattedCommentDate(date) {
@@ -179,17 +157,3 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  .comment__user-info {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-
-    img {
-      height: 50px;
-      width: 50px;
-      border-radius: 69%;
-      margin-right: 8px;
-    }
-  }
-</style>

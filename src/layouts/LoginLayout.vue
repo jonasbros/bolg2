@@ -11,8 +11,11 @@
         </q-toolbar>
 
       <q-tabs v-model="tab">
-        <q-tab name="blogs" label="Posts" />
-        <q-tab name="login" label="Login" />
+        <q-route-tab 
+          name="blogs" 
+          label="Posts" 
+          :to="{ name: 'Home' }" 
+        />
       </q-tabs>
     </q-header>
     <q-page-container>

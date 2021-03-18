@@ -13,11 +13,15 @@ const routes = [
   {
     path: '/new-post',
     component: () => import('layouts/MainLayout.vue'),
+    meta: {
+      requiresAuth: true,
+    },
     children: [
       { 
         path: '', 
         name: 'New Post', 
-        component: () => import('pages/NewPost.vue') }
+        component: () => import('pages/NewPost.vue')
+      }
     ]
   },
   {

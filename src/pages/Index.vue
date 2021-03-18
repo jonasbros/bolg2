@@ -30,17 +30,13 @@ export default {
       blogs: []
     }
   },
-  async mounted() {
-    if( await !firebase.auth().currentUser ) {
-      this.$router.push({ name: 'Login' })
-    }
-
-    this.$q.loading.show();
-    
+  mounted() {
     this.getPosts();
   },
   methods: {
     async getPosts() {
+      this.$q.loading.show();    
+
       let db = firebase.firestore();
       //fetch posts
       let res = await db.collection('posts')

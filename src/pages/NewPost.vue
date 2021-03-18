@@ -173,12 +173,6 @@ export default {
       tags: [],
     }
   },
-  async mounted() {
-    //if user not auth
-    if( await !firebase.auth().currentUser ) {
-      this.$router.push({ name: 'Login' });
-    }
-  },
   methods: {
     async onSubmit() {
       let db = firebase.firestore();
@@ -188,7 +182,7 @@ export default {
       this.disableButton = true;
       // save
       await db.collection('posts').add({
-        title: this.title,
+        title: this.title.trim(),
         body: this.body,
         postPicture: this.picture,
         comments: 0,
