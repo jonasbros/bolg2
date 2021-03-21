@@ -1,13 +1,34 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="justify-start">
         <q-avatar>
           <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
         </q-avatar>
 
-        <q-toolbar-title class="text-weight-bold">BOLG</q-toolbar-title>
+        <q-toolbar-title class="text-weight-bold" shrink>BOLG</q-toolbar-title>
       
+        <Search />
+
+        <q-space />
+        
+        <q-tabs v-model="tab">
+          <q-route-tab 
+            name="blogs"
+            label="Posts"
+            :ripple="false"
+            :to="{ name: 'Home' }" 
+          />
+
+          <q-route-tab
+            name="newpost"
+            label="New Post"
+            :ripple="false"
+            :to="{ name: 'New Post' }" 
+            v-if="isAuthUser"
+          />
+        </q-tabs>
+
         <q-btn
           v-if="isAuthUser"
           flat 
@@ -27,20 +48,6 @@
         />
       </q-toolbar>
 
-      <q-tabs v-model="tab">
-        <q-route-tab 
-          name="blogs"
-          label="Posts"
-          :to="{ name: 'Home' }" 
-        />
-
-        <q-route-tab
-          name="newpost"
-          label="New Post"
-          :to="{ name: 'New Post' }" 
-          v-if="isAuthUser"
-        />
-      </q-tabs>
     </q-header>
 
     <q-page-container>
@@ -51,16 +58,21 @@
 
 <script>
 import { firebase } from './../firebase/config.js';
+import Search from './../components/Search.vue';
 
 export default {
+  components: {
+    Search,
+  },
   data() {
     return {
       tab: 'blogs',
       isAuthUser: null,
     }
   },
-  mounted() {
+  created() {
     this.isAuthUser = this.$store.getters['example/getAuthUser'];
+    console.log('main', this.isAuthUser);
   },
   methods: {
     logout() {
@@ -73,3 +85,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .q-toolbar {
+    min-height: 60px;
+  }
+
+  .q-tab {
+    min-height: 60px;
+  }
+</style>

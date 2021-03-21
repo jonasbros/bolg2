@@ -1,6 +1,6 @@
 <template>
   <q-page padding class="post__container">
-    <div class="row justify-center items-start post__row" v-if="post.postPicture">
+    <div class="row justify-center items-start post__row post__picture-container" v-if="post.postPicture">
       <div class="col-7">
         <div class="post__picture" :style="{ backgroundImage: `url(${post.postPicture})` }"></div>
       </div>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { firebase, isAuthUser } from './../firebase/config.js';
+import { firebase } from './../firebase/config.js';
 import moment from 'moment';
 import Comments from './../components/Comments.vue';
 
@@ -60,6 +60,8 @@ export default {
     }
   },
   async created() {
+    this.$q.loading.show();    
+
     let postId = this.$route.params.id;
 
     let res = await firebase.firestore()
@@ -69,19 +71,25 @@ export default {
     
     this.formattedPostDate = moment(res.data().createdAt.toDate()).format('MMM DD, YYYY YYYY HH:mm:ss a');
     this.post = await res.data();
-  },
-  methods: {
-    getPost() {
-      console.log('peepee');
-    },
+
+    this.$q.loading.hide();    
   }
 }
 </script>
 
 <style lang="scss">
 
+  .post__container {
+    min-height: 50vh !important;
+  }
+
+  .post__picture-container {
+    min-height: 560px;
+  }
+
   .post__picture {
     height: 560px;
+    min-height: 560px;
     max-width: 100%;
     overflow: hidden;
     background: { 

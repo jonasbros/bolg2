@@ -4,9 +4,15 @@
   </div>
 </template>
 <script>
-import { firebase, isAuthUser } from './firebase/config.js';
-
 export default {
   name: 'App',
+  data() {
+    return { 
+      isAuthUser: null
+    }
+  },
+  created() {
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
+  },  
 }
 </script>

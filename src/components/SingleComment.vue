@@ -59,7 +59,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Comment</q-item-label>
+            <q-item-label>Reply</q-item-label>
           </q-item-section>
         </q-item>
       </q-card-actions>

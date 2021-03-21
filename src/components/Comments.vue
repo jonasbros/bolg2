@@ -79,7 +79,7 @@ export default {
       submitCommentLoading: false,
     }
   },
-  mounted() {
+  created() {
     this.isAuthUser = this.$store.getters['example/getAuthUser'];
     console.log('comments', this.isAuthUser);
     this.postId = this.$route.params.id;
@@ -154,7 +154,7 @@ export default {
       this.commentsLoading = false;
     },  // loadComments()
     formattedCommentDate(date) {
-      return moment(date).format('MMM DD, YYYY');
+      return moment(date).format('MMM DD, YYYY HH:mm:ss a');
     }
   }
 }

@@ -2,7 +2,6 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 
 import routes from './routes';
-import store from './../store';
 
 import { firebase } from './../firebase/config.js';
 
@@ -17,7 +16,7 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
-export default function (/* { store, ssrContext } */) {
+export default function ({ store, /* ssrContext  */}) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -31,30 +30,38 @@ export default function (/* { store, ssrContext } */) {
 
 
   Router.beforeEach(async (to, from, next) => {
-    let currentUser = null;
+    //check if user info is already in store
+    let userStore = store.getters['example/getAuthUser'];
+    console.log('router', userStore);
+    //otherwise get user info 
+    if( !userStore ) {
+      firebase.auth().onAuthStateChanged((user) => {
+        console.log('router', user);
+  
+        let { uid, displayName, email, photoURL } = user;
+        store.dispatch('example/storeUserAction', {
+          uid,
+          displayName,
+          email,
+          photoURL
+        });
 
-    firebase.auth().onAuthStateChanged((user) => {
-      let { uid, displayName, email, photoURL } = user;
-      // store.dispatch('example/storeUserAction', {
-      //   uid,
-      //   displayName,
-      //   email,
-      //   photoURL
-      // });
-
-      console.log('main', user);
-
-      currentUser = user;
-      const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-      if (requiresAuth && !currentUser){
-        next('Login');
-      }else{
-        next();
-      }
-    });
+        go(to, from, next, user);
+      });
+    }else {
+      go(to, from, next, userStore);
+    }
 
   });
+  
+  function go(to, from, next, user) {    
+    const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+    if (requiresAuth && !user){
+      next('Login');
+    }else{
+      next();
+    }
+  }
 
   return Router
 }
