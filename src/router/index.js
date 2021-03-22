@@ -29,27 +29,29 @@ export default function ({ store, /* ssrContext  */}) {
   });
 
 
-  Router.beforeEach(async (to, from, next) => {
+  Router.beforeEach((to, from, next) => {
     //check if user info is already in store
-    let userStore = store.getters['example/getAuthUser'];
-    console.log('router', userStore);
+    let userFromStore = store.getters['example/getAuthUser'];
+    console.log('router', userFromStore);
     //otherwise get user info 
-    if( !userStore ) {
+    if( !userFromStore ) {
       firebase.auth().onAuthStateChanged((user) => {
         console.log('router', user);
-  
-        let { uid, displayName, email, photoURL } = user;
-        store.dispatch('example/storeUserAction', {
-          uid,
-          displayName,
-          email,
-          photoURL
-        });
-
+        //store user to store if logged in
+        if( user ) {
+          let { uid, displayName, email, photoURL } = user;
+          store.dispatch('example/storeUserAction', {
+            uid,
+            displayName,
+            email,
+            photoURL
+          });
+        } 
+        //proceed regardless if user is logged in
         go(to, from, next, user);
       });
     }else {
-      go(to, from, next, userStore);
+      go(to, from, next, userFromStore);
     }
 
   });

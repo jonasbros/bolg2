@@ -9,6 +9,10 @@
     <div class="row justify-center">
       <div class="col-5">
         <q-form
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="off"
+          spellcheck="false"
           @submit.prevent="onSubmit"
           class="q-gutter-md"
         >
@@ -16,7 +20,7 @@
             outlined
             v-model="title"
             label="Title"
-            lazy-rules
+            lazy-rules="ondemand"
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
 
@@ -114,19 +118,19 @@
             outlined
             v-model="excerpt"
             label="Excerpt"
-            lazy-rules
+            lazy-rules="ondemand"
             autogrow
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
 
           <q-input
             outlined
-            @keydown.tab="addTags"
+            @keydown.tab.prevent="addTags"
             label="Tags"
             hint="Press tab to add tag"
           />
 
-          <q-chip v-for="tag in tags" :key="tag">
+          <q-chip v-for="(tag, index) in tags" :key="tag + index">
             {{ tag }}
           </q-chip>
 
@@ -173,11 +177,44 @@ export default {
       tags: [],
     }
   },
+  computed: {
+    keywords() {
+      let keywords = [];
+      let duplicateCapitalizedWords = [];
+
+      keywords = this.title
+        .split(" ")
+        .filter((word) => {
+          let nonKeywords = ['and', 'the', 'The', 'And'];
+          return ( word.length >= 3 && !nonKeywords.includes(word) );
+        })
+        .map((word) => {
+          if( /[A-Z]/.test(word.charAt(0)) ) {
+            duplicateCapitalizedWords.push(word);
+          }
+          return word.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+        });
+
+      keywords.push(...duplicateCapitalizedWords);
+
+      return keywords;
+    }
+  },
   methods: {
     async onSubmit() {
+      //body is blank
+      if( !this.body ) {
+        this.$q.notify({
+          type: 'negative',
+          message: 'Please type something in the body.'
+        });
+
+        return;
+      }
+      //body is not blank
       let db = firebase.firestore();
       let userInfo = this.$store.getters['example/getAuthUser'];
-
+      console.log(this.keywords);
       this.$q.loading.show();
       this.disableButton = true;
       // save
@@ -194,6 +231,7 @@ export default {
         excerpt: this.excerpt,
         slug: this.title.replaceAll(" ", "-"),
         tags: this.tags,
+        keywords: this.keywords,
       });
       // after save
       this.$q.loading.hide();
@@ -224,7 +262,10 @@ export default {
       }) 
     },
     addTags(e) {
-      this.tags.push(e.target.value);
+      if( e.target.value ) {
+        this.tags.push(e.target.value);
+        e.target.value = "";
+      }
     }
   }
 }

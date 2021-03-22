@@ -11,6 +11,18 @@ const routes = [
     ]
   },
   {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { 
+        path: '/search/:term', 
+        name: 'Search', 
+        component: () => import('pages/Search.vue'),
+        props: true,
+      }
+    ]
+  },
+  {
     path: '/new-post',
     component: () => import('layouts/MainLayout.vue'),
     meta: {
@@ -31,7 +43,8 @@ const routes = [
       { 
         path: '', 
         name: 'Post', 
-        component: () => import('pages/Post.vue') }
+        component: () => import('pages/Post.vue')
+      }
     ]
   },
   {
