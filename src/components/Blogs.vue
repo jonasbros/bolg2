@@ -14,8 +14,25 @@
       </router-link>
 
       <p>{{ truncateText(blog.excerpt, truncateExcerptCount) }}</p>
+      
       <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate }}</p>
-      <q-chip v-for="(tag, index) in blog.tags" :key="index">#{{ tag }}</q-chip>
+      
+      <div class="row">
+        <div class="col-6">
+          <Likes/>
+        </div>
+
+        <div class="col-6">
+          <div class="row justify-end">
+            <q-chip v-for="(tag, index) in blog.tags" :key="index">
+              <router-link :to="{ name: 'Tag', params: { tag: tag } }">
+                #{{tag}}
+              </router-link>
+            </q-chip>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -23,10 +40,14 @@
 <script>
 import moment from 'moment';
 import truncate from 'lodash.truncate';
+import Likes from './../components/Likes.vue';
 
 export default {
   name: 'Blogs',
   props: ['blog'],
+  components: {
+    Likes,
+  },
   data() {
     return {
       truncateTitleCount: 12,

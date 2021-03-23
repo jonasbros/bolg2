@@ -11,13 +11,25 @@ const routes = [
     ]
   },
   {
-    path: '/',
+    path: '/search/:term',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { 
-        path: '/search/:term', 
+        path: '', 
         name: 'Search', 
         component: () => import('pages/Search.vue'),
+        props: true,
+      }
+    ]
+  },
+  {
+    path: '/tag/:tag',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { 
+        path: '', 
+        name: 'Tag', 
+        component: () => import('pages/Tag.vue'),
         props: true,
       }
     ]

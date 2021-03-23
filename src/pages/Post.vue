@@ -22,7 +22,9 @@
     <div class="row justify-center items-start post__row">
       <div class="col-7">
         <q-chip v-for="(tag, index) in post.tags" :key="index">
-          #{{tag}}
+          <router-link :to="{ name: 'Tag', params: { tag: tag } }">
+            #{{tag}}
+          </router-link>
         </q-chip>
       </div>
     </div>

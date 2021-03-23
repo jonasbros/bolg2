@@ -131,7 +131,7 @@
           />
 
           <q-chip v-for="(tag, index) in tags" :key="tag + index">
-            {{ tag }}
+            #{{ tag }}
           </q-chip>
 
 
