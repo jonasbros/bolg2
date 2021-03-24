@@ -25,7 +25,6 @@
             label="New Post"
             :ripple="false"
             :to="{ name: 'New Post' }" 
-            v-if="isAuthUser"
           />
         </q-tabs>
 
@@ -77,6 +76,7 @@ export default {
   methods: {
     logout() {
       firebase.auth().signOut().then(() => {
+        this.$store.dispatch('example/deleteUserAction');
         this.$router.push({ name: 'Login' });
       }).catch((error) => {
         console.log(error);

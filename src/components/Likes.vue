@@ -17,7 +17,7 @@
       icon="fas fa-thumbs-up"
       style="font-size: 0.75rem"
       v-if="isLiked && isAuthUser"
-      @click="likeHandler"
+      @click="unlikeHandler"
     />
 
     <span>
@@ -51,7 +51,15 @@ export default {
     this.likes = this.post.likes;
   },
   methods: {
+    unlikeHandler: debounce(async function() {
+      if( !isLiked || !isAuthUser ) return;
+
+      
+
+    }, 300),
     likeHandler: debounce(async function() {
+      if( isLiked || !isAuthUser ) return;
+
       let db = firebase.firestore();
 
       console.log(this);

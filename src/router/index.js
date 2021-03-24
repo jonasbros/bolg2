@@ -59,7 +59,7 @@ export default function ({ store, /* ssrContext  */}) {
   function go(to, from, next, user) {    
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
     if (requiresAuth && !user){
-      next('Login');
+      next({ name: 'Login' });
     }else{
       next();
     }
