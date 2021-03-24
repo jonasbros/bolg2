@@ -59,6 +59,12 @@ export default {
     return {
       post: [],
       formattedPostDate: null,
+      metaInfo: 'test'
+    }
+  },
+  meta() {
+    return {
+      title: this.post.title,
     }
   },
   async created() {

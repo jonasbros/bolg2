@@ -5,7 +5,8 @@
       round 
       color="primary" 
       icon="far fa-thumbs-up"
-      v-if="!isLiked"
+      style="font-size: 0.75rem"
+      v-if="!isLiked && isAuthUser"
       @click="likeHandler"
     />
 
@@ -14,7 +15,8 @@
       round 
       color="primary" 
       icon="fas fa-thumbs-up"
-      v-else
+      style="font-size: 0.75rem"
+      v-if="isLiked && isAuthUser"
       @click="likeHandler"
     />
 
@@ -25,25 +27,59 @@
 </template>
 
 <script>
-import _debounce from 'lodash.debounce';
+import { debounce } from 'quasar';
+import { firebase } from './../firebase/config.js';
 
 export default {
   name: 'Likes',
+  props: [
+    'post',
+  ],
   data () {
     return {
       likes: 0,
       isLiked: false,
+      isAuthUser: false,
+      authUserInfo: [],
     }
   },
+  mounted() {
+    this.authUserInfo = this.$store.getters['example/getAuthUser'];    
+
+    this.isAuthUser = this.authUserInfo;
+
+    this.likes = this.post.likes;
+  },
   methods: {
-    likeHandler() {
-      let test = function(){
-        console.log('hehe');
-      }
+    likeHandler: debounce(async function() {
+      let db = firebase.firestore();
 
-      let debounced = _debounce(test, 1000);
+      console.log(this);
+      let { uid, displayName, photoURL } = this.authUserInfo;
 
-      debounced();
+      let newLikesCount = this.likes + 1;
+
+      let likes = await db.collection('likes').add({
+        userId: uid,
+        userName: displayName,
+        photoURL: photoURL,
+        postId: this.post.id,
+      });
+    
+      await db.collection('posts')
+      .doc(this.post.id)
+      .update({
+        likes: newLikesCount,
+      })
+      .then(() => {
+        this.likes++;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }, 300),
+    isUserLikedPost() {
+
     }
   }
 }

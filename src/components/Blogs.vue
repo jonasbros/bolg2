@@ -19,7 +19,7 @@
       
       <div class="row">
         <div class="col-6">
-          <Likes/>
+          <Likes :post="blog"/>
         </div>
 
         <div class="col-6">
