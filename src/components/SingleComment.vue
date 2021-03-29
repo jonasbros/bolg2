@@ -36,22 +36,14 @@
         class="text-right text-grey-7"
         style="padding-top: 0;"
       >
-        <span class="text-subtitle2 q-mr-sm">{{ comment.likes }} likes</span>
+        <span class="text-subtitle2 q-mr-sm">{{ likes }} likes</span>
         <span class="text-subtitle2">{{ comment.replies }} replies</span>
       </q-card-section>
 
-      <q-separator />
+      <q-separator v-if="isAuthUser" />
 
-      <q-card-actions class="justify-around">
-        <q-item clickable class="col-4">
-          <q-item-section avatar>
-            <q-icon color="primary" name="far fa-thumbs-up" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>Like</q-item-label>
-          </q-item-section>
-        </q-item>
+      <q-card-actions class="justify-around" v-if="isAuthUser">
+        <CommentLikes :comment="comment" @updateCommentLikesCount="updateCommentLikesCount"/>
 
         <q-item clickable class="col-4">
           <q-item-section avatar>
@@ -59,7 +51,9 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Reply</q-item-label>
+            <q-item-label>
+              Reply
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-card-actions>
@@ -68,9 +62,30 @@
 </template>
 
 <script>
+import { firebase } from './../firebase/config.js';
+import CommentLikes from './CommentLikes.vue';
+
 export default {
   name: 'SingleComponent',
   props: ['comment'],
+  components: {
+    CommentLikes,
+  },
+  data() {
+    return {
+      likes: 0,
+      isAuthUser: null,
+    }
+  },
+  mounted() {
+    this.likes = this.comment.likes;
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
+  },
+  methods: {
+    updateCommentLikesCount(newLikesCount) {
+      this.likes = newLikesCount;
+    }
+  }
 }
 </script>
 
