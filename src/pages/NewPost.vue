@@ -1,12 +1,6 @@
 <template>
   <q-page padding>
-    <div class="row justify-center text-center">
-      <div class="col-7">
-        <h1 class="text-weight-bold text-h2">New Post</h1>
-      </div>
-    </div>
-
-    <div class="row justify-center">
+    <div class="row justify-center q-mt-xl">
       <div class="col-5">
         <q-form
           autocorrect="off"

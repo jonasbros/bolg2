@@ -32,8 +32,8 @@
 
     <div class="row comments__container q-mt-lg">
       <div class="col-12">
-        <div class="row q-mb-md" v-for="(comment, index) in comments" :key="index">
-          <SingleComment :comment="comment" />
+        <div class="row q-mb-md" v-for="(comment, index) in comments" :key="comment.id + index">
+          <SingleComment :comment="comment" :post="post" />
         </div>
       </div>
     </div>
@@ -81,19 +81,19 @@ export default {
   },
   created() {
     this.isAuthUser = this.$store.getters['example/getAuthUser'];
-    console.log('comments', this.isAuthUser);
     this.postId = this.$route.params.id;
   },
   methods: {
     async onSubmit() {
       if( !this.isAuthUser ){
-         console.log('No auth!'); 
+         console.log('No Login!'); 
          return;
       }
 
       let db = firebase.firestore();
       this.submitCommentLoading = true;
-      let newCommentRes = await db.collection('comments').add({
+      let newCommentRes = await db.collection('comments')
+      .add({
         userId: this.isAuthUser.uid,
         userName: this.isAuthUser.displayName,
         userPicture: this.isAuthUser.photoURL,
@@ -109,9 +109,13 @@ export default {
       this.loadNewComment(newCommentRes.id);
       this.submitCommentLoading = false;
     },
+
     async loadNewComment(commentId) {
       let db = firebase.firestore();
-      let newComment = await db.collection('comments').doc(commentId).get();
+
+      let newComment = await db.collection('comments')
+        .doc(commentId)
+        .get();
       //last item to startAt for pagination
       this.commentsLastVisible = newComment;
       //
@@ -119,8 +123,10 @@ export default {
       //format createdAt date
       newComment.createdAt = moment(newComment.createdAt.toDate()).format('MMM DD, YYYY HH:mm:ss a');
       //add new comment to top of array
-      this.comments.unshift({ ...newComment });
+      this.comments.unshift({ id: commentId, ...newComment });
+      console.log(this.comments);
     },
+
     async loadComments() {
       let db = firebase.firestore();
       this.commentsLoading = true;
@@ -147,12 +153,13 @@ export default {
       comments = await comments.docs.map((doc, i, arr) => {
         let newDoc = doc.data();
         newDoc.createdAt = this.formattedCommentDate(newDoc.createdAt.toDate());
-        return { ...newDoc }
+        return { id: doc.id, ...newDoc }
       });
       this.comments.push(...comments);
     
       this.commentsLoading = false;
     },  // loadComments()
+
     formattedCommentDate(date) {
       return moment(date).format('MMM DD, YYYY HH:mm:ss a');
     }

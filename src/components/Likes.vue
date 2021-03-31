@@ -1,12 +1,20 @@
 <template>
   <div>
+    <q-icon
+      color="primary"
+      name="far fa-thumbs-up"
+      size="1.5em"
+      class="q-mr-sm"
+      v-if="!isAuthUser"
+    />
+
     <q-btn 
       flat 
       round 
       color="primary" 
       icon="far fa-thumbs-up"
       style="font-size: 0.75rem"
-      v-if="!isLiked && isAuthUser"
+      v-show="!isLiked && isAuthUser"
       @click="likeHandler"
     />
 
@@ -16,12 +24,12 @@
       color="primary" 
       icon="fas fa-thumbs-up"
       style="font-size: 0.75rem"
-      v-if="isLiked && isAuthUser"
+      v-show="isLiked && isAuthUser"
       @click="unlikeHandler"
     />
 
     <span>
-      {{ likes }} Likes
+      {{ likes }} likes
     </span>
   </div>
 </template>
@@ -41,24 +49,44 @@ export default {
       isLiked: false,
       isAuthUser: false,
       authUserInfo: [],
+      userLikeId: '',
     }
   },
   mounted() {
     this.authUserInfo = this.$store.getters['example/getAuthUser'];    
 
     this.isAuthUser = this.authUserInfo;
-
     this.likes = this.post.likes;
+    this.isUserLikedPost();
   },
   methods: {
     unlikeHandler: debounce(async function() {
-      if( !isLiked || !isAuthUser ) return;
+      if( !this.isLiked || !this.isAuthUser ) return;
 
-      
+      let db = firebase.firestore();
 
-    }, 300),
+      let newLikesCount = this.likes - 1;
+
+      let likes = await db.collection('likes')
+        .doc(this.userLikeId)
+        .delete();
+    
+      await db.collection('posts')
+      .doc(this.post.id)
+      .update({
+        likes: newLikesCount,
+      })
+      .then(() => {
+        this.likes--;
+        this.isLiked = false;
+      })
+      .catch((err) => {
+        console.log(err);
+      });  
+    }, 300), // unlikeHandler()
+    
     likeHandler: debounce(async function() {
-      if( isLiked || !isAuthUser ) return;
+      if( this.isLiked || !this.isAuthUser ) return;
 
       let db = firebase.firestore();
 
@@ -73,6 +101,8 @@ export default {
         photoURL: photoURL,
         postId: this.post.id,
       });
+
+      this.userLikeId = await likes.id;
     
       await db.collection('posts')
       .doc(this.post.id)
@@ -81,13 +111,25 @@ export default {
       })
       .then(() => {
         this.likes++;
+        this.isLiked = true;
       })
       .catch((err) => {
         console.log(err);
       });
-    }, 300),
-    isUserLikedPost() {
+    }, 300),  // unlikeHandler()
 
+    async isUserLikedPost() {
+      let db = firebase.firestore();
+      
+      let userLikedPosts = await db.collection('likes')
+        .where('userId', '==', this.isAuthUser.uid)
+        .where('postId', '==', this.post.id)
+        .get();
+
+      if( await !userLikedPosts.empty ) {
+        this.userLikeId = userLikedPosts.docs[0].id;
+        this.isLiked = true;
+      }
     }
   }
 }

@@ -36,41 +36,79 @@
         class="text-right text-grey-7"
         style="padding-top: 0;"
       >
-        <span class="text-subtitle2 q-mr-sm">{{ comment.likes }} likes</span>
-        <span class="text-subtitle2">{{ comment.replies }} replies</span>
+        <span class="text-subtitle2 q-mr-sm">{{ likes }} likes</span>
+        <span class="text-subtitle2">{{ replies }} replies</span>
       </q-card-section>
 
-      <q-separator />
+      <q-separator v-if="isAuthUser" />
 
-      <q-card-actions class="justify-around">
-        <q-item clickable class="col-4">
-          <q-item-section avatar>
-            <q-icon color="primary" name="far fa-thumbs-up" />
-          </q-item-section>
+      <q-card-actions class="justify-around" v-if="isAuthUser">
+        <CommentLikes :comment="comment" @updateCommentLikesCount="updateCommentLikesCount"/>
 
-          <q-item-section>
-            <q-item-label>Like</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable class="col-4">
+        <q-item clickable class="col-4" @click="isActiveReply = !isActiveReply">
           <q-item-section avatar>
             <q-icon color="primary" name="far fa-comment-alt" />
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Reply</q-item-label>
+            <q-item-label>
+              Reply
+            </q-item-label>
           </q-item-section>
         </q-item>
       </q-card-actions>
+
+      <q-card-section 
+        class="text-grey-7"
+        style="padding-top: 0;"
+        v-show="isActiveReply"
+      >
+        <Reply 
+          :comment="comment"
+          :user="isAuthUser" 
+          @updateCommentRepliesCount="updateCommentRepliesCount"
+        />
+      </q-card-section>
     </q-card>
+    
   </div>
 </template>
 
 <script>
+import { firebase } from './../firebase/config.js';
+import CommentLikes from './CommentLikes.vue';
+import Reply from './Reply.vue';
+
 export default {
   name: 'SingleComponent',
   props: ['comment'],
+  components: {
+    CommentLikes,
+    Reply,
+  },
+  data() {
+    return {
+      likes: 0,
+      replies: 0,
+      isAuthUser: null,
+      isActiveReply: false,
+    }
+  },
+  mounted() {
+    this.likes = this.comment.likes;
+    this.replies = this.comment.replies;
+
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
+  },
+  methods: {
+    updateCommentLikesCount(newLikesCount) {
+      this.likes = newLikesCount;
+    },
+    updateCommentRepliesCount(newRepliesCount) {
+      this.replies = newRepliesCount;
+      this.isActiveReply = false;
+    }
+  }
 }
 </script>
 

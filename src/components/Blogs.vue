@@ -17,9 +17,23 @@
       
       <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate }}</p>
       
-      <div class="row">
+      <div class="row  items-center">
         <div class="col-6">
-          <Likes :post="blog"/>
+          <div class="row nowrap items-center">
+            <Likes :post="blog"/>
+            <div class="q-ml-lg">
+              <q-icon
+                color="primary"
+                name="far fa-comment-alt"
+                size="1.5em"
+                class="q-mr-sm"
+              />
+
+              <span>
+                {{ commentsCount }} comments
+              </span>
+            </div>
+          </div>
         </div>
 
         <div class="col-6">
@@ -41,6 +55,8 @@
 import moment from 'moment';
 import truncate from 'lodash.truncate';
 import Likes from './../components/Likes.vue';
+import { firebase } from './../firebase/config.js';
+
 
 export default {
   name: 'Blogs',
@@ -52,6 +68,7 @@ export default {
     return {
       truncateTitleCount: 12,
       truncateExcerptCount: 45,
+      commentsCount: 0,
     }
   },
   computed: {
@@ -59,7 +76,19 @@ export default {
       return moment(this.blog.createdAt.toDate()).format('MMM DD, YYYY HH:mm:ss a');
     },
   },
+  mounted() {
+    this.getCommentsCount();
+  },
   methods: {
+    async getCommentsCount() {
+      let db = firebase.firestore();
+      
+      let comments = await db.collection('comments')
+      .where('postId', '==', this.blog.id)
+      .get();
+
+      this.commentsCount = await comments.docs.length;
+    },
     truncateText(text, wordCount) {
       let splitText = text.split(" ");
       let thWord = splitText[wordCount - 1];
