@@ -39,8 +39,11 @@
         <span class="text-subtitle2 q-mr-sm">{{ likes }} likes</span>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <span class="text-subtitle2">{{ replies }} replies</span>
 =======
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
         <span class="text-subtitle2">{{ comment.replies }} replies</span>
@@ -86,7 +89,10 @@ import { firebase } from './../firebase/config.js';
 import CommentLikes from './CommentLikes.vue';
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import Reply from './Reply.vue';
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
@@ -99,7 +105,10 @@ export default {
     CommentLikes,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     Reply,
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
@@ -110,9 +119,13 @@ export default {
       likes: 0,
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
       replies: 0,
       isAuthUser: null,
       isActiveReply: false,
+=======
+      isAuthUser: null,
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
       isAuthUser: null,
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
@@ -125,8 +138,11 @@ export default {
     this.likes = this.comment.likes;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     this.replies = this.comment.replies;
 
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
@@ -138,10 +154,13 @@ export default {
       this.likes = newLikesCount;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     },
     updateCommentRepliesCount(newRepliesCount) {
       this.replies = newRepliesCount;
       this.isActiveReply = false;
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 >>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======

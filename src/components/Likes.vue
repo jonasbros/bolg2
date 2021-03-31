@@ -66,9 +66,15 @@ export default {
       let db = firebase.firestore();
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
       let newLikesCount = this.likes - 1;
 
+=======
+
+      let newLikesCount = this.likes - 1;
+
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 =======
 
       let newLikesCount = this.likes - 1;
