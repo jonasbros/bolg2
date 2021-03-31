@@ -37,7 +37,11 @@
         style="padding-top: 0;"
       >
         <span class="text-subtitle2 q-mr-sm">{{ likes }} likes</span>
+<<<<<<< HEAD
         <span class="text-subtitle2">{{ replies }} replies</span>
+=======
+        <span class="text-subtitle2">{{ comment.replies }} replies</span>
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
       </q-card-section>
 
       <q-separator v-if="isAuthUser" />
@@ -77,36 +81,52 @@
 <script>
 import { firebase } from './../firebase/config.js';
 import CommentLikes from './CommentLikes.vue';
+<<<<<<< HEAD
 import Reply from './Reply.vue';
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 
 export default {
   name: 'SingleComponent',
   props: ['comment'],
   components: {
     CommentLikes,
+<<<<<<< HEAD
     Reply,
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
   },
   data() {
     return {
       likes: 0,
+<<<<<<< HEAD
       replies: 0,
       isAuthUser: null,
       isActiveReply: false,
+=======
+      isAuthUser: null,
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
     }
   },
   mounted() {
     this.likes = this.comment.likes;
+<<<<<<< HEAD
     this.replies = this.comment.replies;
 
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
     this.isAuthUser = this.$store.getters['example/getAuthUser'];
   },
   methods: {
     updateCommentLikesCount(newLikesCount) {
       this.likes = newLikesCount;
+<<<<<<< HEAD
     },
     updateCommentRepliesCount(newRepliesCount) {
       this.replies = newRepliesCount;
       this.isActiveReply = false;
+=======
+>>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
     }
   }
 }
