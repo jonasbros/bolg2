@@ -47,16 +47,8 @@ export default {
     this.authUserInfo = this.$store.getters['example/getAuthUser'];  
     this.likes = this.comment.likes;
     this.isAuthUser = this.authUserInfo;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
     this.isUserLikedPost();
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
   },
   methods: {
     likeHandler: debounce(async function() {
@@ -123,9 +115,6 @@ export default {
           console.log(err);
         });  
     }, 300), // unlikeHandler()    
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 
     async isUserLikedPost() {
       let db = firebase.firestore();
@@ -144,14 +133,5 @@ export default {
 
 
   } // methods
-=======
-  }
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
-  }
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
-  }
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
 }
 </script>

@@ -25,6 +25,7 @@
 
 <script>
 import { firebase, timestamp } from './../firebase/config.js';
+import moment from 'moment';
 
 export default {
   name: 'Reply',
@@ -51,7 +52,7 @@ export default {
 
       this.submitReplyLoading = true;
 
-      await db.collection('comments')
+      let newReply = await db.collection('comments')
       .doc(this.comment.id)
       .collection('replies')
       .add({
@@ -72,10 +73,29 @@ export default {
       this.reply = '';
 
       this.$emit('updateCommentRepliesCount', this.repliesCount);
-
+      this.loadNewReply(newReply.id);
       this.submitReplyLoading = false;
 
     }, //onSubmit() 
+
+    async loadNewReply(replyId) {
+      let db = firebase.firestore();
+
+      let newReply = await db.collection('comments')
+        .doc(this.comment.id)
+        .collection('replies')
+        .doc(replyId)
+        .get();
+      //last item to startAt for pagination
+      this.commentsLastVisible = newReply;
+      //
+      newReply = newReply.data();
+      //format createdAt date
+      newReply.createdAt = moment(newReply.createdAt.toDate()).format('MMM DD, YYYY HH:mm:ss a');
+      //add new comment to top of array
+      this.$emit('appendNewReply', { id: replyId, ...newReply });
+      console.log(this.comments);
+    },
   }
 }
 </script>

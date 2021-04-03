@@ -39,9 +39,11 @@
 </template>
 
 <script>
-export default {
-  // name: 'LayoutName',
+import Search from './../components/Search.vue';
 
+export default {
+  name: 'LoginLayout',
+  components: { Search },
   data () {
     return {
       tab: 'login',

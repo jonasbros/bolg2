@@ -161,7 +161,7 @@ export default {
     },  // loadComments()
 
     formattedCommentDate(date) {
-      return moment(date).format('MMM DD, YYYY HH:mm:ss a');
+      return moment(date).format('MMM DD, YYYY hh:mm:ss a');
     }
   }
 }

@@ -1,24 +1,28 @@
 <template>
   <q-page padding class="text-center">
+    <!-- <h1 class="text-weight-bold text-h2">Welcome to Bolg</h1> -->
     <q-btn color="primary" icon="fab fa-google" label="Sign in with Google" @click="signInWithGoogle"/>
   </q-page>
 </template>
 
 <script>
-import { googleProvider, firebase, isAuthUser } from './../firebase/config.js';
+import { googleProvider, firebase } from './../firebase/config.js';
 
 export default {
   name: 'Login',
   data() {
     return {
-      user: []
+      user: [],
+      isAuthUser: null,
     }    
   },
   async mounted() {
     //if user auth
-    if( await isAuthUser() ) {
+    this.isAuthUser = this.$store.getters['example/getAuthUser'];
+    if( this.isAuthUser ) {
       this.$router.push({ name: 'Home' });     
     }
+
   },
   methods: {
     async signInWithGoogle() {

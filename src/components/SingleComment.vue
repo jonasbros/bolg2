@@ -37,17 +37,7 @@
         style="padding-top: 0;"
       >
         <span class="text-subtitle2 q-mr-sm">{{ likes }} likes</span>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-        <span class="text-subtitle2">{{ replies }} replies</span>
-=======
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-        <span class="text-subtitle2">{{ comment.replies }} replies</span>
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
+        <span class="text-subtitle2">{{ repliesCount }} replies</span>
       </q-card-section>
 
       <q-separator v-if="isAuthUser" />
@@ -77,6 +67,15 @@
           :comment="comment"
           :user="isAuthUser" 
           @updateCommentRepliesCount="updateCommentRepliesCount"
+          @appendNewReply="appendNewReply"
+        />
+      </q-card-section>
+      <hr class="q-separator q-separator q-separator--horizontal" v-if="replies.length">
+
+      <q-card-section class="q-pa-none">
+        <SingleReply 
+          v-for="(reply, index) in replies" :key="reply.id"
+          :reply="reply"
         />
       </q-card-section>
     </q-card>
@@ -87,86 +86,66 @@
 <script>
 import { firebase } from './../firebase/config.js';
 import CommentLikes from './CommentLikes.vue';
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 import Reply from './Reply.vue';
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
+import SingleReply from './SingleReply.vue';
+import { date } from 'quasar';
 
 export default {
   name: 'SingleComponent',
   props: ['comment'],
   components: {
     CommentLikes,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     Reply,
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
+    SingleReply,
   },
   data() {
     return {
       likes: 0,
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      replies: 0,
+      replies: [],
+      repliesCount: 0,
       isAuthUser: null,
       isActiveReply: false,
-=======
       isAuthUser: null,
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
-      isAuthUser: null,
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
-      isAuthUser: null,
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
     }
   },
   mounted() {
     this.likes = this.comment.likes;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    this.replies = this.comment.replies;
-
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
+    this.repliesCount = this.comment.replies;
     this.isAuthUser = this.$store.getters['example/getAuthUser'];
+    console.log(this.comment);
+    this.getCommentReplies();
   },
   methods: {
     updateCommentLikesCount(newLikesCount) {
       this.likes = newLikesCount;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
     },
     updateCommentRepliesCount(newRepliesCount) {
-      this.replies = newRepliesCount;
+      this.repliesCount = newRepliesCount;
       this.isActiveReply = false;
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
-=======
->>>>>>> 701ed2d5723bbf5958ec650cd612b4aa6cbb7b72
+    },
+    async getCommentReplies() {
+      let db = firebase.firestore();
+      let replies = await db.collection('comments')
+      .doc(this.comment.id)
+      .collection('replies')
+      .orderBy('createdAt', 'desc')
+      .get();
+
+      this.replies = replies.docs.map(doc => {
+        let newDoc = doc.data();
+        newDoc.createdAt = date.formatDate(newDoc.createdAt.toDate(), 'MMM DD, YYYY hh:mm:ss a');
+
+        return { id: doc.id, ...newDoc };
+      });
+
+      console.log(this.replies);
+
+    }, //getCommentReplies
+
+    appendNewReply(newReply) {
+      this.replies.unshift(newReply);
     }
-  }
+  } 
 }
 </script>
 
