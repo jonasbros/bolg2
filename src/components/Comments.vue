@@ -9,6 +9,7 @@
         >
           <q-input
             outlined
+            color="secondary"
             v-model="comment"
             label="Add a comment"
             lazy-rules
@@ -21,7 +22,7 @@
             <q-btn 
               label="Who asked?"
               type="submit"
-              color="primary"
+              color="secondary"
               :loading="submitCommentLoading"
               :disable="submitCommentLoading"
             />
@@ -41,7 +42,7 @@
     <div class="row q-mt-md justify-center">
       <div class="col-8">
         <q-btn 
-          color="primary"
+          color="secondary"
           class="full-width"
           label="Load comments"
           @click="loadComments"
@@ -139,7 +140,7 @@ export default {
           .limit(this.commentsPer)
           .get();
       }else {
-        //paginate
+        //pagination
         comments = await db.collection('comments')
           .where('postId', '==', this.post.id)
           .orderBy('createdAt', 'desc')

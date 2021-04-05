@@ -10,7 +10,7 @@
           } 
         }
       ">
-        <span class="text-weight-bold text-h3">{{ truncateText(blog.title, truncateTitleCount) }}</span>
+        <span class="text-weight-bold text-h3 text-black">{{ truncateText(blog.title, truncateTitleCount) }}</span>
       </router-link>
 
       <p>{{ truncateText(blog.excerpt, truncateExcerptCount) }}</p>
@@ -23,7 +23,7 @@
             <Likes :post="blog"/>
             <div class="q-ml-lg">
               <q-icon
-                color="primary"
+                color="secondary"
                 name="far fa-comment-alt"
                 size="1.5em"
                 class="q-mr-sm"
@@ -38,8 +38,8 @@
 
         <div class="col-6">
           <div class="row justify-end">
-            <q-chip v-for="(tag, index) in blog.tags" :key="index">
-              <router-link :to="{ name: 'Tag', params: { tag: tag } }">
+            <q-chip color="secondary" v-for="(tag, index) in blog.tags" :key="index">
+              <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
                 #{{tag}}
               </router-link>
             </q-chip>

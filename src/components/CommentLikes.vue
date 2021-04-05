@@ -2,7 +2,7 @@
   <div>
     <q-item clickable class="col-4" @click="likeHandler" v-show="!isLiked">
       <q-item-section avatar>
-        <q-icon color="primary" name="far fa-thumbs-up" />
+        <q-icon color="secondary" name="far fa-thumbs-up" />
       </q-item-section>
 
       <q-item-section>
@@ -14,7 +14,7 @@
 
     <q-item clickable class="col-4" @click="unlikeHandler" v-show="isLiked">
       <q-item-section avatar>
-        <q-icon color="primary" name="fas fa-thumbs-up" />
+        <q-icon color="secondary" name="fas fa-thumbs-up" />
       </q-item-section>
 
       <q-item-section>

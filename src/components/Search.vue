@@ -2,9 +2,8 @@
   <q-input
     v-model="search"
     placeholder="Search"
-    dark
     dense
-    standout
+    outlined
     style="width: 350px;"
     @keydown.enter="execSearch"
   >

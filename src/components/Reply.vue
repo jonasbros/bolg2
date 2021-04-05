@@ -5,6 +5,7 @@
   >
     <q-input
       outlined
+      color="secondary"
       v-model="reply"
       label="Add a reply"
       lazy-rules
@@ -16,7 +17,7 @@
     <q-btn 
       label="Who asked?"
       type="submit"
-      color="primary"
+      color="secondary"
       :loading="submitReplyLoading"
       :disable="submitReplyLoading"
     />

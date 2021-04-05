@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-icon
-      color="primary"
+      color="secondary"
       name="far fa-thumbs-up"
       size="1.5em"
       class="q-mr-sm"
@@ -11,7 +11,7 @@
     <q-btn 
       flat 
       round 
-      color="primary" 
+      color="secondary" 
       icon="far fa-thumbs-up"
       style="font-size: 0.75rem"
       v-show="!isLiked && isAuthUser"
@@ -21,7 +21,7 @@
     <q-btn 
       flat 
       round 
-      color="primary" 
+      color="secondary" 
       icon="fas fa-thumbs-up"
       style="font-size: 0.75rem"
       v-show="isLiked && isAuthUser"
@@ -57,7 +57,8 @@ export default {
 
     this.isAuthUser = this.authUserInfo;
     this.likes = this.post.likes;
-    this.isUserLikedPost();
+    
+    if( this.isAuthUser ) this.isUserLikedPost();
   },
   methods: {
     unlikeHandler: debounce(async function() {

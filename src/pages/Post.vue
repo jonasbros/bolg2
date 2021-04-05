@@ -2,7 +2,7 @@
   <q-page padding class="post__container" v-if="post">
     <div class="row justify-center items-start post__row post__picture-container" v-if="post.postPicture">
 
-      <div class="col-7">
+      <div class="col-12">
 
         <div class="post__picture" :style="{ backgroundImage: `url(${post.postPicture})` }"></div>
 
@@ -37,8 +37,8 @@
 
     <div class="row justify-center items-start post__row">
       <div class="col-7">
-        <q-chip v-for="(tag, index) in post.tags" :key="index">
-          <router-link :to="{ name: 'Tag', params: { tag: tag } }">
+        <q-chip color="secondary" v-for="(tag, index) in post.tags" :key="index">
+          <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
             #{{tag}}
           </router-link>
         </q-chip>

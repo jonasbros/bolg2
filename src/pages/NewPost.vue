@@ -11,10 +11,11 @@
           class="q-gutter-md"
         >
           <q-input
-            outlined
             v-model="title"
             label="Title"
             lazy-rules="ondemand"
+            outlined
+            color="secondary"
             :rules="[ val => val && val.length > 0 || 'Please type something']"
           />
 
@@ -110,6 +111,7 @@
 
           <q-input
             outlined
+            color="secondary"
             v-model="excerpt"
             label="Excerpt"
             lazy-rules="ondemand"
@@ -119,9 +121,10 @@
 
           <q-input
             outlined
+            color="secondary"
             @keydown.tab.prevent="addTags"
             label="Tags"
-            hint="Press tab to add tag"
+            hint="Press TAB to add tag"
           />
 
           <q-chip v-for="(tag, index) in tags" :key="tag + index">
@@ -133,6 +136,7 @@
             style="max-width: 100%"
             label="Upload Header Photo"
             accept=".jpg, image/*"
+            color="secondary"
             hide-upload-btn
             flat
             @rejected="onRejected"
@@ -143,7 +147,7 @@
             <q-btn 
               label="Submit"
               type="submit"
-              color="primary"
+              color="secondary"
               :loading="disableButton"
               :disable="disableButton"
             />

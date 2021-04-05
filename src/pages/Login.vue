@@ -1,7 +1,14 @@
 <template>
-  <q-page padding class="text-center">
+  <q-page padding class="flex items-center justify-center">
     <!-- <h1 class="text-weight-bold text-h2">Welcome to Bolg</h1> -->
-    <q-btn color="primary" icon="fab fa-google" label="Sign in with Google" @click="signInWithGoogle"/>
+    <q-btn 
+    color="secondary"
+    size="lg"
+    icon="fab fa-google"
+    label="Sign in with Google"
+    @click="signInWithGoogle"
+    />
+    
   </q-page>
 </template>
 

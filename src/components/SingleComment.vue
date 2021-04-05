@@ -47,7 +47,7 @@
 
         <q-item clickable class="col-4" @click="isActiveReply = !isActiveReply">
           <q-item-section avatar>
-            <q-icon color="primary" name="far fa-comment-alt" />
+            <q-icon color="secondary" name="far fa-comment-alt" />
           </q-item-section>
 
           <q-item-section>
