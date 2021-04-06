@@ -1,19 +1,21 @@
 <template>
   <div class="blog__container q-pa-md text-left">
-    <div q-pa-md>
+    <div>
       <router-link 
+        class="text-weight-bold text-h3 text-black q-mb-md"
+        style="display: inline-block;"
         :to="{ 
           name: 'Post', 
           params: { 
             id: blog.id,
             slug: blog.slug
           } 
-        }
-      ">
-        <span class="text-weight-bold text-h3 text-black">{{ truncateText(blog.title, truncateTitleCount) }}</span>
+        }"
+      >
+        {{ truncateText(blog.title, truncateTitleCount) | badwordsFilter }}
       </router-link>
 
-      <p>{{ truncateText(blog.excerpt, truncateExcerptCount) }}</p>
+      <p>{{ truncateText(blog.excerpt, truncateExcerptCount) | badwordsFilter }}</p>
       
       <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate }}</p>
       
@@ -40,7 +42,7 @@
           <div class="row justify-end">
             <q-chip color="secondary" v-for="(tag, index) in blog.tags" :key="index">
               <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
-                #{{tag}}
+                #{{ tag | badwordsFilter }}
               </router-link>
             </q-chip>
           </div>
@@ -56,7 +58,7 @@ import moment from 'moment';
 import truncate from 'lodash.truncate';
 import Likes from './../components/Likes.vue';
 import { firebase } from './../firebase/config.js';
-
+import Filter from 'bad-words';
 
 export default {
   name: 'Blogs',
@@ -66,7 +68,7 @@ export default {
   },
   data() {
     return {
-      truncateTitleCount: 12,
+      truncateTitleCount: 8,
       truncateExcerptCount: 45,
       commentsCount: 0,
     }

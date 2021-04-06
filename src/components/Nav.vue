@@ -26,43 +26,56 @@
 
       <q-space />
       
-      <q-tabs v-model="tab">
-        <q-route-tab 
-          name="blogs"
-          label="Posts"
+      <div class="row desktop-only">
+        <q-tabs v-model="tab">
+          <q-route-tab 
+            name="blogs"
+            label="Posts"
+            class="text-secondary"
+            :ripple="false"
+            :to="{ name: 'Home' }" 
+          />
+
+          <q-route-tab
+            name="newpost"
+            label="New Post"
+            class="text-secondary"
+            :ripple="false"
+            :to="{ name: 'New Post' }" 
+          />
+        </q-tabs>
+
+        <q-btn
+          v-if="isAuthUser && !fromLoginLayout"
+          flat 
+          dense 
           class="text-secondary"
-          :ripple="false"
-          :to="{ name: 'Home' }" 
+          icon="logout" 
+          label="Logout" 
+          @click="logout"
         />
 
-        <q-route-tab
-          name="newpost"
-          label="New Post"
+        <q-btn
+          v-if="!isAuthUser && !fromLoginLayout"
+          flat 
+          dense
           class="text-secondary"
-          :ripple="false"
-          :to="{ name: 'New Post' }" 
+          icon="login"
+          label="Login"
+          :to="{ name: 'Login' }" 
         />
-      </q-tabs>
+      </div>
 
-      <q-btn
-        v-if="isAuthUser && !fromLoginLayout"
-        flat 
-        dense 
-        class="text-secondary"
-        icon="logout" 
-        label="Logout" 
-        @click="logout"
-      />
-
-      <q-btn
-        v-if="!isAuthUser && !fromLoginLayout"
-        flat 
-        dense
-        class="text-secondary"
-        icon="login"
-        label="Login"
-        :to="{ name: 'Login' }" 
-      />
+      <div class="mobile-only">
+        <q-btn 
+          flat
+          @click="drawer = !drawer" 
+          round
+          dense
+          color="secondary"
+          icon="menu"
+        />
+      </div>
     </q-toolbar>
 
   </q-header>
@@ -87,6 +100,7 @@ export default {
   data () {
     return {
       tab: 'blogs',
+      drawer: false,
     }
   },
   methods: {

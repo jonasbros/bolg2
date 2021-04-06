@@ -2,8 +2,8 @@
   <q-page padding>
     <div class="row justify-center text-center">
       <div class="col-7">
-        <h1 v-if="posts.length" class="text-weight-bold text-h4">Search results for: {{ term }}</h1>
-        <h1 v-else class="text-weight-bold text-h4">No posts found for: {{ term }}</h1>
+        <h1 v-if="posts.length" class="text-weight-bold text-h4">Search results for: {{ term | badwordsFilter }}</h1>
+        <h1 v-else class="text-weight-bold text-h4">No posts found for: {{ term | badwordsFilter }}</h1>
       </div>
     </div>
    

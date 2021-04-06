@@ -245,7 +245,7 @@ export default {
       let compressedPhoto = await compress(imageFile[0], {
         quality: 0.8,
         type: "image/jpeg",
-        scale: 0.5,
+        scale: 0.75,
       });
       //upload photo
       let imageSnap = await storageRef.put(compressedPhoto, { contentType: 'image/jpeg' });
@@ -281,5 +281,9 @@ export default {
   .q-uploader__list.scroll {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .q-editor__toolbar-group .text-primary {
+    color: $secondary !important;
   }
 </style>

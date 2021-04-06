@@ -12,7 +12,7 @@
     <div class="row justify-center items-start post__row">
       <div class="col-7">
 
-        <h1 class="text-weight-bold text-h2">{{ post.title }}</h1>
+        <h1 class="text-weight-bold text-h2">{{ post.title | badwordsFilter }}</h1>
 
         <div class="post__user-info-container">
 
@@ -39,7 +39,7 @@
       <div class="col-7">
         <q-chip color="secondary" v-for="(tag, index) in post.tags" :key="index">
           <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
-            #{{tag}}
+            #{{tag | badwordsFilter}}
           </router-link>
         </q-chip>
       </div>
@@ -47,7 +47,7 @@
 
     <div class="row justify-center items-start post__row">
       <div class="col-7">
-        <div v-html="post.body"></div>
+        <div v-html="$options.filters.badwordsFilter(post.body)"></div>
         <hr>
       </div>
     </div>
@@ -66,6 +66,7 @@ import { firebase } from './../firebase/config.js';
 import moment from 'moment';
 import Comments from './../components/Comments.vue';
 import Likes from './../components/Likes.vue';
+import Filter from 'bad-words';
 
 export default {
   name: 'Post',

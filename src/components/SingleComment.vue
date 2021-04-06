@@ -29,7 +29,7 @@
       </q-card-section>
 
       <q-card-section>
-        {{ comment.body }}
+        {{ comment.body | badwordsFilter }}
       </q-card-section>
 
       <q-card-section 

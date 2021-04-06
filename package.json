@@ -1,8 +1,8 @@
 {
   "name": "bolg2",
   "version": "0.0.1",
-  "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "description": "Simple blog website",
+  "productName": "Bolg",
   "author": "Jonas Perez <00jonasperez@gmail.com>",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "app": "^0.1.0",
     "autoprefixer": "^9.0.0",
     "axios": "^0.18.1",
+    "bad-words": "^3.0.4",
     "boot": "^0.8.2",
     "core-js": "^3.6.5",
     "firebase": "^8.3.0",

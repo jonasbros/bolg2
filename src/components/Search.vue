@@ -6,11 +6,11 @@
     outlined
     style="width: 350px;"
     @keydown.enter="execSearch"
+    class="nav__search"
   >
     <template v-slot:append>
       <q-btn
         unelevated
-        round
         icon="search"
         @click="execSearch"
         lazy-rules="ondemand"
@@ -60,3 +60,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .nav__search .q-field__control.relative-position.row.no-wrap {
+    padding-right: 0;
+  }
+</style>

@@ -24,7 +24,7 @@
     </div> <!-- user info row -->
     
     <div class="row reply-body__container">
-      <p>{{ reply.body }}</p>
+      <p>{{ reply.body | badwordsFilter }}</p>
     </div>
 
     <hr class="q-separator q-separator q-separator--horizontal">

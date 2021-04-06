@@ -2,8 +2,8 @@
   <q-page padding>
     <div class="row justify-center text-center">
       <div class="col-7">
-        <h1 v-if="posts.length" class="text-weight-bold text-h4">Posts with tag: {{ tag }}</h1>
-        <h1 v-else class="text-weight-bold text-h4">No posts found with tag: {{ tag }}</h1>
+        <h1 v-if="posts.length" class="text-weight-bold text-h4">Posts with tag: {{ tag | badwordsFilter }}</h1>
+        <h1 v-else class="text-weight-bold text-h4">No posts found with tag: {{ tag | badwordsFilter }}</h1>
       </div>
     </div>
    
