@@ -1,14 +1,19 @@
 <template>
   <q-header elevated>
     <q-toolbar class="justify-start">
-      <q-avatar>
-        <q-icon 
-        name="fas fa-feather-alt"
-        style="font-size: 1.45em;"
-        color="secondary"
-        />
+      <q-icon 
+      name="fas fa-feather-alt"
+      size="md"
+      color="secondary"
+      class="gt-sm"
+      />
 
-      </q-avatar>
+      <q-icon 
+      name="fas fa-feather-alt"
+      size="lg"
+      color="secondary"
+      class="sm"
+      />
 
       <q-toolbar-title 
       class="text-weight-bold"
@@ -22,11 +27,11 @@
         </router-link>        
       </q-toolbar-title>
 
-      <Search />
+      <Search class="gt-sm"/>
 
       <q-space />
       
-      <div class="row desktop-only">
+      <div class="row gt-sm">
         <q-tabs v-model="tab">
           <q-route-tab 
             name="blogs"
@@ -52,7 +57,7 @@
           class="text-secondary"
           icon="logout" 
           label="Logout" 
-          @click="logout"
+          @click="$emit('logout')" 
         />
 
         <q-btn
@@ -66,14 +71,14 @@
         />
       </div>
 
-      <div class="mobile-only">
+      <div class="sm">
         <q-btn 
           flat
-          @click="drawer = !drawer" 
-          round
+          @click="menuButtonClick" 
           dense
           color="secondary"
           icon="menu"
+          size="1.85rem"
         />
       </div>
     </q-toolbar>
@@ -104,14 +109,31 @@ export default {
     }
   },
   methods: {
-    logout() {
-      firebase.auth().signOut().then(() => {
-        this.$store.dispatch('example/deleteUserAction');
-        this.$router.push({ name: 'Login' });
-      }).catch((error) => {
-        console.log(error);
-      });
-    },
+    menuButtonClick() {
+      this.$emit('openDrawer');
+      this.drawer = !this.drawer;
+    }
   }
 }
 </script>
+
+<style lang="scss">
+  .q-toolbar {
+    min-height: 60px;
+
+
+    @media only screen and (max-width: 1023px) {
+      min-height: 85px;
+    }
+  }
+
+  .q-tab {
+    min-height: 60px;
+  }
+
+  .q-toolbar__title {
+    @media only screen and (max-width: 1023px) {
+      font-size: 1.65rem;
+    }
+  }
+</style>

@@ -2,8 +2,9 @@
   <q-input
     v-model="search"
     placeholder="Search"
-    dense
-    outlined
+    :dense="isDense"
+    :outlined="isOutlined"
+    color="secondary"
     style="width: 350px;"
     @keydown.enter="execSearch"
     class="nav__search"
@@ -27,6 +28,16 @@ import { firebase } from './../firebase/config.js';
 
 export default {
   name: 'Search',
+  props: {
+    isDense: {
+      type: Boolean,
+      default: true,
+    },
+    isOutlined: {
+      type: Boolean,
+      default: true,
+    },
+  },
   data () {
     return {
       search: this.$route.params.term || '',
