@@ -12,7 +12,7 @@
       name="fas fa-feather-alt"
       size="lg"
       color="secondary"
-      class="sm"
+      class="lt-md"
       />
 
       <q-toolbar-title 
@@ -71,7 +71,7 @@
         />
       </div>
 
-      <div class="sm">
+      <div class="lt-md">
         <q-btn 
           flat
           @click="menuButtonClick" 
