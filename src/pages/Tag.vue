@@ -8,7 +8,7 @@
     </div>
    
     <div class="row justify-center text-center" v-for="(post, index) in posts" :key="new Date().getTime() + index">
-      <div class="col-7">
+      <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
         <Blogs :blog="post"/>
         <hr>
       </div>

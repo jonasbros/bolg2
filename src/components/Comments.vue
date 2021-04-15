@@ -73,7 +73,7 @@ export default {
       comment: '',
       commentsLoading: false,
       commentsPer: 8,
-      commentsLastVisible: null,
+      commentsLastVisible: [],
       comments: [],
       isAuthUser: null,
       postId: null,
@@ -129,6 +129,8 @@ export default {
     },
 
     async loadComments() {
+      if( !this.commentsLastVisible ) return;
+
       let db = firebase.firestore();
       this.commentsLoading = true;
       //first set of comments

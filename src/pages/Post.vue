@@ -10,7 +10,7 @@
     </div>
 
     <div class="row justify-center items-start post__row">
-      <div class="col-7">
+      <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
 
         <h1 class="text-weight-bold text-h2">{{ post.title | badwordsFilter }}</h1>
 
@@ -36,7 +36,7 @@
     </div>
 
     <div class="row justify-center items-start post__row">
-      <div class="col-7">
+      <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
         <q-chip color="secondary" v-for="(tag, index) in post.tags" :key="index">
           <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
             #{{tag | badwordsFilter}}
@@ -46,14 +46,14 @@
     </div>
 
     <div class="row justify-center items-start post__row">
-      <div class="col-7">
+      <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
         <div v-html="$options.filters.badwordsFilter(post.body)"></div>
         <hr>
       </div>
     </div>
     
     <div class="row justify-center items-start post__row">
-      <div class="col-7">
+      <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
         <Comments :post="{...post, id: $route.params.id}"/>
       </div>
     </div>

@@ -8,7 +8,7 @@
     >
 
       <div class="row justify-center text-center" v-for="(blog, index) in blogs" :key="blog.id + index">
-        <div class="col-7 col-sm-10 col-xs-12">
+        <div class="col-lg-6 col-md-7 col-sm-10 col-xs-12">
           <Blogs :blog="blog"/>
           <hr>
         </div>

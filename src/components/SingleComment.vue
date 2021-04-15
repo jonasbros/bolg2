@@ -10,21 +10,6 @@
               <div class="text-caption">{{ comment.createdAt }}</div>
             </div>
           </div>
-
-          <div class="col-auto">
-            <q-btn color="grey-7" round flat icon="more_vert">
-              <q-menu cover auto-close>
-                <q-list>
-                  <q-item clickable>
-                    <q-item-section>Delete Comment</q-item-section>
-                  </q-item>
-                  <q-item clickable>
-                    <q-item-section>Report Comment</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </div>
         </div>
       </q-card-section>
 

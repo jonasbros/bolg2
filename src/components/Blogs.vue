@@ -19,8 +19,8 @@
       
       <p>By <strong>{{ blog.userName }}</strong> at {{ formattedPostDate }}</p>
       
-      <div class="row  items-center">
-        <div class="col-6">
+      <div class="row items-center">
+        <div class="col-xs-12 col-sm-6">
           <div class="row nowrap items-center">
             <Likes :post="blog"/>
             <div class="q-ml-lg">
@@ -38,10 +38,33 @@
           </div>
         </div>
 
-        <div class="col-6">
-          <div class="row justify-end">
-            <q-chip color="secondary" v-for="(tag, index) in blog.tags" :key="index">
-              <router-link class="text-white" :to="{ name: 'Tag', params: { tag: tag } }">
+        <div class="col-xs-12 col-sm-6">
+          <div class="row justify-end gt-xs">
+            <q-chip 
+              color="secondary" 
+              v-for="(tag, index) in blog.tags"
+              :key="index"
+            >
+              <router-link 
+                class="text-white" 
+                :to="{ name: 'Tag', params: { tag: tag } }"
+              >
+                #{{ tag | badwordsFilter }}
+              </router-link>
+            </q-chip>
+          </div>
+
+          <div class="row justify-start xs q-mt-md">
+            <q-chip 
+              class="q-ml-none q-mr-sm"
+              color="secondary" 
+              v-for="(tag, index) in blog.tags"
+              :key="index"
+            >
+              <router-link 
+                class="text-white" 
+                :to="{ name: 'Tag', params: { tag: tag } }"
+              >
                 #{{ tag | badwordsFilter }}
               </router-link>
             </q-chip>
@@ -110,7 +133,8 @@ export default {
 </script>
 
 <style lang="scss">
-// .blog__container {
-//   background: pink;
-// }
+  .blog__container {
+    hyphens: auto;
+    word-break: break-word;
+  } 
 </style>

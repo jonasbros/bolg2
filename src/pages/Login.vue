@@ -2,6 +2,7 @@
   <q-page padding class="flex items-center justify-center">
     <!-- <h1 class="text-weight-bold text-h2">Welcome to Bolg</h1> -->
     <q-btn 
+    class="q-mb-xl"
     color="secondary"
     size="lg"
     icon="fab fa-google"

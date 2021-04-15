@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="row justify-center q-mt-xl">
-      <div class="col-5">
+      <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
         <q-form
           autocorrect="off"
           autocapitalize="off"
@@ -16,7 +16,7 @@
             lazy-rules="ondemand"
             outlined
             color="secondary"
-            :rules="[ val => val && val.length > 0 || 'Please type something']"
+            :rules="[ val => val && val.length > 0 || 'Please type something' ]"
           />
 
           <q-editor
