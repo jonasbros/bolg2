@@ -1,7 +1,7 @@
 
 const routes = [
   {
-    path: '/',
+    path: '/bolg2',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { 
@@ -11,7 +11,7 @@ const routes = [
     ]
   },
   {
-    path: '/search/:term',
+    path: '/bolg2/search/:term',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { 
@@ -23,7 +23,7 @@ const routes = [
     ]
   },
   {
-    path: '/tag/:tag',
+    path: '/bolg2/tag/:tag',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { 
@@ -35,7 +35,7 @@ const routes = [
     ]
   },
   {
-    path: '/new-post',
+    path: '/bolg2/new-post',
     component: () => import('layouts/MainLayout.vue'),
     meta: {
       requiresAuth: true,
@@ -49,7 +49,7 @@ const routes = [
     ]
   },
   {
-    path: '/post/:id/:slug',
+    path: '/bolg2/post/:id/:slug',
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { 
@@ -60,7 +60,7 @@ const routes = [
     ]
   },
   {
-    path: '/login',
+    path: '/bolg2/login',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { 
@@ -75,7 +75,7 @@ const routes = [
   // Always leave this as last one,
   // but you can also remove it
   {
-    path: '*',
+    path: '/bolg2/*',
     component: () => import('pages/Error404.vue')
   }
 ]
