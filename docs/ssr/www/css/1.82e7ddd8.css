@@ -1,0 +1,32 @@
+.nav__search .q-field__control.relative-position.row.no-wrap {
+  padding-right: 0;
+}
+.q-toolbar {
+  min-height: 60px;
+}
+@media only screen and (max-width: 1023px) {
+.q-toolbar {
+    min-height: 85px;
+}
+}
+.q-tab {
+  min-height: 60px;
+}
+@media only screen and (max-width: 1023px) {
+.q-toolbar__title {
+    font-size: 1.65rem;
+}
+}
+.drawer-active-link .block {
+  text-decoration: underline;
+}
+.mobile__search {
+  margin: 0 auto;
+  font-size: 2rem;
+  width: 80% !important;
+}
+.q-drawer__backdrop {
+  display: none;
+}
+
+/*# sourceMappingURL=1.82e7ddd8.css.map*/

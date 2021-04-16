@@ -1,0 +1,9 @@
+a {
+  text-decoration: none;
+}
+
+*::selection {
+  background: #62d1bd;
+}
+
+/*# sourceMappingURL=app.2f54c2d3.css.map*/
