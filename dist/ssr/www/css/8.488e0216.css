@@ -1,0 +1,15 @@
+.q-uploader {
+  width: auto;
+}
+.q-uploader__subtitle {
+  display: none;
+}
+.q-uploader__list.scroll {
+  padding-left: 0;
+  padding-right: 0;
+}
+.q-editor__toolbar-group .text-primary {
+  color: #62d1bd !important;
+}
+
+/*# sourceMappingURL=8.488e0216.css.map*/
