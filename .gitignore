@@ -1,7 +1,8 @@
+!/node_modules/user-home/*
+
 .DS_Store
 .thumbs.db
 node_modules
-!/node_modules/user-home/*
 
 # Quasar core related directories
 .quasar
