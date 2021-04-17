@@ -124,6 +124,7 @@
             color="secondary"
             @keydown.tab.prevent="addTags"
             label="Tags"
+            mask="NNNNNNNNNNNNNNNN"
             hint="Press TAB to add tag"
           />
 
