@@ -20,7 +20,7 @@
 
           <div class="q-mt-xs">
             <q-btn 
-              label="Who asked?"
+              label="Submit"
               type="submit"
               color="secondary"
               :loading="submitCommentLoading"
