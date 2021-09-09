@@ -15,7 +15,7 @@
     />
 
     <q-btn 
-      label="Who asked?"
+      label="Submit"
       type="submit"
       color="secondary"
       :loading="submitReplyLoading"
